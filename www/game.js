@@ -14,7 +14,6 @@ const rndInt = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
 
 class Emote {
     isFinished = false;
-    isStarted = false;
 
     top = rndInt(0, windowHeight);
     left = rndInt(0, windowWidth);
@@ -74,8 +73,6 @@ document.addEventListener("DOMContentLoaded", () => {
             emote.update(deltaTime); 
             if(!emote.isFinished){
                 emote.draw(ctx);  
-            }else{
-                delete emotes[idx];
             }
         });
         emotes = emotes.filter(emote => !emote.isFinished);
@@ -91,7 +88,7 @@ const client = new StreamerbotClient({
     port: 9090,
     endpoint: '/',
     subscribe: {
-      "General": "Custom"
+      "General": ["Custom"]
     },
     onData: (data) => console.log(data)
 });
