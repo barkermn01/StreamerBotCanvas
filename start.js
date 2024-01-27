@@ -33,7 +33,8 @@ const downloadFile = async (url, fileFullPath) =>{
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const webRoot = ((config.webroot[0] === "." && config.webroot[0] === ".") ? config.webroot.replace("./", __dirname.replaceAll("\\", "/") + "/") : config.webroot) + "/";
-const fileStore = ((config.fileStore[0] === "." && config.fileStore[0] === ".") ? config.fileStore.replace("./", __dirname.replaceAll("\\", "/") + "/") : config.fileStore) + "/";
+// going to be used in the future to be a way of proxying arround stupid CORS
+//const fileStore = ((config.fileStore[0] === "." && config.fileStore[0] === ".") ? config.fileStore.replace("./", __dirname.replaceAll("\\", "/") + "/") : config.fileStore) + "/";
 
 
 const requestListener = async function (req, res) {
