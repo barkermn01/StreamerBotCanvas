@@ -60,3 +60,7 @@ const server = http.createServer(requestListener);
 server.listen(config.port, config.host, () => {
     console.log(`Server is running on http://${config.host}:${config.port} make sure you add an OBS Browser to it!`);
 });
+
+process.on('exit', () => {
+    server.close();
+});
