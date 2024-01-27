@@ -7,7 +7,7 @@ const client = new StreamerbotClient({
     },
     onData: (data) => {
         try{
-            window.emotes.push(new Emote(data.data.imageUrl));
+            window.GameObjects.push(new Emote(data.data.imageUrl));
         }catch(e){}
     }
 });
