@@ -7,8 +7,9 @@ const client = new StreamerbotClient({
     },
     onData: (resp) => {
         try{
-            if(resp.data.Module == "emote"){
-                window.GameObjects.push(new Emote(resp.data.Data.imageUrl));
+            let module = window.Modules.find( item => item.name.toLowerCase() == resp.data.Module.toLowerCase())
+            if(typeof module !== "undefined" && typeof module.message === "function"){
+                module.message(resp.data.Data);
             }
         }catch(e){}
     }

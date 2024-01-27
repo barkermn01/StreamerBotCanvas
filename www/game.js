@@ -14,13 +14,13 @@ const loadJS = (src) => {
 
 const rndInt = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
 
-window.GameObjects = [];
+window.Modules = [];
 
 document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("canvas").width = window.innerWidth;
     document.getElementById("canvas").height = window.innerHeight;
 
-    Config.modules.forEach( name => loadJS("/engine/"+name+".js"));
+    Config.Modules.forEach( name => loadJS("/engine/"+name+".js"));
 
     function primaryLoop() {
         currentFrameTime = Date.now();
@@ -28,13 +28,10 @@ document.addEventListener("DOMContentLoaded", () => {
         ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
         deltaTime = (currentFrameTime - lastFrameTime) / 1000;
-        window.GameObjects.forEach(drawable => { 
-            drawable.update(deltaTime); 
-            if(!drawable.isFinished){
-                drawable.draw(ctx);  
-            }
+        window.Modules.forEach(module => { 
+            module.update(deltaTime); 
+            module.draw(ctx);  
         });
-        window.GameObjects = window.GameObjects.filter(drawable => !drawable.isFinished);
         lastFrameTime = currentFrameTime;
         window.requestAnimationFrame(primaryLoop);
     };

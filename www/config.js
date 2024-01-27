@@ -1,5 +1,6 @@
 const Config  = {
-    modules:[
+    // modules are render in order of top to bottom
+    Modules:[
         "emote"
     ],
     emote:{

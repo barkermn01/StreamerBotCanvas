@@ -42,3 +42,27 @@ class Emote {
         ctx.drawImage(this.#image, this.left, this.top, this.width, this.height);
     }
 }
+
+let Emotes = [];
+const Module = {
+    name: "Emote",
+    draw: (ctx) => {
+        Emotes.forEach(emote => { 
+            emote.update(deltaTime); 
+            if(!emote.isFinished){
+                emote.draw(ctx);  
+            }
+        });
+    },
+    update: (dt) => {
+        Emotes.forEach(emote => { 
+            emote.update(dt); 
+        });
+        Emotes = Emotes.filter(emote => !emote.isFinished);
+    },
+    message: (data) => {
+        Emotes.push(new Emote(data.imageUrl));
+    }
+}
+
+window.Modules.push(Module)
