@@ -5,9 +5,11 @@ const client = new StreamerbotClient({
     subscribe: {
       "General": ["Custom"]
     },
-    onData: (data) => {
+    onData: (resp) => {
         try{
-            window.GameObjects.push(new Emote(data.data.imageUrl));
+            if(resp.data.Module == "emote"){
+                window.GameObjects.push(new Emote(resp.data.Data.imageUrl));
+            }
         }catch(e){}
     }
 });
