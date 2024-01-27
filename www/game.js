@@ -21,8 +21,8 @@ class Emote {
     width = 128;
     height = 128;
 
-    #moveVertical = rndInt(50, 500)-windowHeight;
-    #moveHorizontal = rndInt(50, 500)-windowWidth;
+    #moveVertical = rndInt(50, 300)-windowHeight;
+    #moveHorizontal = rndInt(50, 300)-windowWidth;
     #image = new Image();
     #animationTimeLeft = animationTime;
 
@@ -89,9 +89,9 @@ document.addEventListener("DOMContentLoaded", () => {
 const client = new StreamerbotClient({
     host: '127.0.0.1',
     port: 9090,
-    endpoint: '/'
-});
-
-client.on('General.Custom', (data) => {
-    console.log('Custom Event:', data);
+    endpoint: '/',
+    subscribe: {
+      "General": "Custom"
+    },
+    onData: (data) => console.log(data)
 });
