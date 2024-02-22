@@ -9,8 +9,10 @@ const client = new StreamerbotClient({
         try{
             let module = window.Modules.find( item => item.name.toLowerCase() == resp.data.Module.toLowerCase())
             if(typeof module !== "undefined" && typeof module.message === "function"){
-                module.message(resp.data.Data);
+                try{
+                    module.message(resp.data.Data);
+                }catch(err){ new ShowError(e, true); }
             }
-        }catch(e){}
+        }catch(e){ }
     }
 });

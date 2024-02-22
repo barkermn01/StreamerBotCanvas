@@ -5,22 +5,29 @@ window.onresize = () => {
     document.getElementById("canvas").height = window.innerHeight;
 };
 
-const loadJS = (src) => {
+const loadJS = (src, cb) => {
     const srpt = document.createElement("script");
     srpt.setAttribute("src", src);
     srpt.setAttribute("type", "text/javascript");
+    if(cb){
+        srpt.addEventListener("load", cb);
+    }
     document.head.appendChild(srpt);
 }
 
-const rndInt = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
+loadJS("./lib/minmax.js");
+loadJS("./lib/showerror.js", () => loadJS("./lib/wsclient.js"));
+
+const rndInt = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
 window.Modules = [];
 
 document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("canvas").width = window.innerWidth;
-    document.getElementById("canvas").height = window.innerHeight;
 
     Config.Modules.forEach( name => loadJS("/engine/"+name+".js"));
+    
+    document.getElementById("canvas").width = window.innerWidth;
+    document.getElementById("canvas").height = window.innerHeight;
 
     function primaryLoop() {
         currentFrameTime = Date.now();
