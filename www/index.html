@@ -13,11 +13,27 @@
             padding:0;
             margin:0;
         }
+        div#errorBox {
+            width: 80%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-left: -40%;
+            margin-top: -20%;
+            background-color: rgba(255,0,0,0.6);
+            padding: 10px;
+            border: 2px solid red;
+            border-radius: 9px;
+            color: white;
+        }
+
+        div#errorBox h3 {
+            margin: 0;
+        }
     </style>
     <script type="text/javascript" src="https://unpkg.com/@streamerbot/client/dist/streamerbot-client.js"></script>
     <script type="text/javascript" src="config.js"></script>
-    <script type="text/javascript" src="game.js"></script>
-    <script type="text/javascript" src="WebSocketClient.js"></script>
+    <script type="text/javascript" src="game.js" defer></script>
 </head>
 
 <body>
