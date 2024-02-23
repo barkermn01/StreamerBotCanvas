@@ -2,7 +2,6 @@ const Config  = {
     // modules are render in order of top to bottom
     Modules:[
         "emote",
-        "chat"
     ],
     Bots:[
         "RPGCommunityBot",
