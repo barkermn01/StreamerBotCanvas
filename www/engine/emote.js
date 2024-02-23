@@ -11,14 +11,52 @@ class Emote {
 
     #moveVertical;
     #moveHorizontal;
-    #image = new Image();
     #animationTimeLeft;
 
-    constructor(path) {
-        this.#image.src = path;
-        this.#image.addEventListener("load", () => { this.isReady = true; })
+    #gif;
+    #frameBuffer = [];
+    #IsAnimated = false;
+    #currentFrame = 0;
+    #framesReady = 0;
+    #frameUpdateTime = 1000/25;
+    #currentFrameTime = 0;
 
-        // if fixed speed is provided for movement
+    constructor(path) {
+        this.#gif = document.createElement("img");
+        this.#gif.setAttribute("id", "gifRender");
+        this.#gif.src = path;
+        this.#gif.style.position = "absolute";
+        this.#gif.style.right = "-72px";
+        this.#gif.style.width="72px"
+        document.body.appendChild(this.#gif);
+        
+        const sgif = new SuperGif({ gif: this.#gif, auto_play: false} );
+        sgif.load(() => {
+            const len = sgif.get_length();
+            if(len > 0){
+                this.#IsAnimated = true;
+                for (let i = 0; i < sgif.get_length(); i++)
+                {
+                    sgif.move_to(i);
+                    const frame = new Image();
+                    frame.src = sgif.get_canvas().toDataURL('image/png')
+                    frame.addEventListener("load", () => { 
+                        this.#framesReady++;
+                        if(this.#framesReady == this.#frameBuffer.length-1){
+                            this.isReady = true;
+                        }else{
+                            this.isReady = false;
+                        }
+                    });
+                    this.#frameBuffer.push(frame);
+                }
+            }
+        });
+
+        this.#frameBuffer[0] = new Image();
+        this.#frameBuffer[0].src = path;
+        this.#frameBuffer[0].addEventListener("load", () => { this.isReady = true; });
+
         try{
             const speedType = typeof(Config.emote.Speed);
             if( speedType == "object" && typeof Config.emote.Speed.Min == 'number' && typeof Config.emote.Speed.Max == 'number'){
@@ -45,10 +83,12 @@ class Emote {
                     this.#moveHorizontal = 0-this.#moveHorizontal
                 }
             }
-        }catch(err){ ShowError(err, true); console.error(err); }
+        }catch(err){ console.error(err); ShowError(err, true); }
     }
 
     update(dt) {
+        this.#currentFrameTime += dt * 1000;
+
         if(this.#animationTimeLeft <= 2){
             if(this.width >= 0 || this.height >= 0){
                 this.width -= 50*dt;
@@ -68,11 +108,21 @@ class Emote {
             this.#moveHorizontal = 0 - this.#moveHorizontal;
         }
         this.#animationTimeLeft -= dt;
+
+        if(this.#IsAnimated){
+            if(this.#currentFrameTime >= this.#frameUpdateTime){
+                this.#currentFrameTime -= this.#frameUpdateTime;
+                this.#currentFrame++;
+            }
+            if(this.#currentFrame > this.#frameBuffer.length-1){
+                this.#currentFrame = 0;
+            }
+        }
     }
 
     draw(ctx) {
         if(this.isReady){
-            ctx.drawImage(this.#image, this.left, this.top, this.width, this.height);
+            ctx.drawImage(this.#frameBuffer[this.#currentFrame], this.left, this.top, this.width, this.height);
         }else{
             if(new Date() > this.Expires){
                 this.isFinished = true;
@@ -82,11 +132,11 @@ class Emote {
 }
 
 let Emotes = [];
-const Module = {
+
+window.Modules.push({
     name: "Emote",
     draw: (ctx) => {
         Emotes.forEach(emote => { 
-            emote.update(deltaTime); 
             if(!emote.isFinished){
                 emote.draw(ctx);  
             }
@@ -101,6 +151,4 @@ const Module = {
     message: (data) => {
         Emotes.push(new Emote(data.imageUrl));
     }
-}
-
-window.Modules.push(Module)
+});

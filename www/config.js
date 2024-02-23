@@ -4,6 +4,12 @@ const Config  = {
         "emote",
         "chat"
     ],
+    Bots:[
+        "RPGCommunityBot",
+        "StreamElements",
+        "StreamLabs",
+        "Nightbot"
+    ],
     emote:{
         // constant number as a fixed or MinMax Object for random in range
         AnimationTime:{
@@ -17,14 +23,26 @@ const Config  = {
         RandomDirectionsFromStart:true
     },
     chat:{
+        BeforeCanvas:true,
+        hideBots:true,
         MessageArea:{
-            top:0,
-            left:0,
-            right:0,
-            bottom:0,
-            // if 0 will be full width unless fixed information provided to the message area
-            width:0, 
-            height:0
+            top:"0px",
+            right:"0px",
+            bottom:"0px",
+            width:"300px"
+        },
+        ChatBoxes:{
+            ShowBadges:true,
+            BadgeSettings:{
+                width:24,
+                height:24
+            },
+            HideSpecificBadges:[],
+            ShowEmotes:true,
+            FadeOut:0 ,// don't fade out
+            NewMessages:"below", // or above
+
+            class:"twitch-msg"
         }
     }
 }
