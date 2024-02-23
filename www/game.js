@@ -12,8 +12,12 @@ const loadJS = (src, cb) => {
     if(cb){
         srpt.addEventListener("load", cb);
     }
+    if(cb){
+        srpt.addEventListener("load", cb);
+    }
     document.head.appendChild(srpt);
 }
+
 loadJS("./lib/minmax.js");
 loadJS("./lib/libgif.js");
 loadJS("./lib/showerror.js");
@@ -24,6 +28,7 @@ const rndInt = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 window.Modules = [];
 
 document.addEventListener("DOMContentLoaded", () => {
+
     Config.Modules.forEach( name => loadJS("/engine/"+name+".js"));
     
     document.getElementById("canvas").width = window.innerWidth;
